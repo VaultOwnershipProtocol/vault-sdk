@@ -1,270 +1,227 @@
 # vault-sdk
 Developer SDK for connecting AI agents to Vault context.
-# Vault Context Protocol
+# Vault SDK
 
-The open protocol for permissioned personal AI context.
+Developer SDK for connecting AI agents and applications to Vault context.
 
-Vault Context Protocol defines how AI systems can securely request, verify, and use personal context owned and controlled by individuals.
+Vault SDK allows developers to request, verify, and use permissioned personal context through the Vault Context Protocol.
 
-It introduces the **ownership layer for AI**.
+Vault introduces the **ownership layer for AI**.
 
 ---
 
 ## Overview
 
-Artificial intelligence systems are becoming more powerful every day.
+AI systems are powerful, but they still lack one critical ingredient:
 
-But they still lack one critical capability:
+**personal context**
 
-**personal context.**
+Most AI applications start from zero.
 
-AI tools do not know:
+They do not know:
 
-- who you are  
-- what you care about  
-- what you are working on  
-- your preferences  
-- your knowledge  
-- your goals  
+- who the user is
+- what the user is working on
+- the user's preferences
+- the user's goals
+- the user's knowledge
 
-As a result, users constantly repeat themselves across AI systems.
-
-The Vault Context Protocol introduces a standardized way for AI systems to request and use **user-owned context** with explicit permission.
-
-Vault provides a **secure interface between humans and AI systems**.
+Vault SDK makes it easy for developers to give AI systems secure access to user-owned context with explicit permission.
 
 ---
 
-## The Ownership Layer
+## What the SDK Does
 
-AI systems provide intelligence.
+Vault SDK provides a simple interface for:
 
-Vault provides ownership and context.
+- connecting a user vault
+- requesting context
+- verifying a Vault Passport
+- retrieving approved context blocks
+- revoking access
 
+The goal is simple:
 
-Human
-↓
-Vault
-↓
-AI Tools & Agents
-↓
-AI Models
-
-
-Humans generate the data and context that make AI useful.
-
-Vault ensures individuals retain control over that context.
-
----
-
-## Core Principles
-
-The Vault Context Protocol is designed around five principles.
-
-### 1. User Ownership
-
-Users own the data and context that power their AI experiences.
-
-Vault ensures individuals can:
-
-- view their data  
-- control access  
-- revoke permissions  
-- delete context  
-
----
-
-### 2. Explicit Permission
-
-AI systems must request permission before accessing personal context.
-
-Nothing is shared without user approval.
-
----
-
-### 3. Interoperability
-
-Users should be able to move between AI systems without losing their personal context.
-
-The Vault protocol allows AI tools to interoperate through a shared context standard.
-
----
-
-### 4. Transparency
-
-Users should always know:
-
-- what data is being accessed  
-- which systems accessed it  
-- when it was used  
-
----
-
-### 5. Portability
-
-Personal context should move with the user across platforms and AI systems.
+**AI agents should never start from zero again.**
 
 ---
 
 ## Core Concepts
 
-The Vault Context Protocol introduces three core primitives.
+### User Vault
 
-### Context Blocks
+A secure personal context store owned and controlled by the user.
 
-Structured units of personal context.
+A vault may contain:
 
-Examples include:
+- identity
+- preferences
+- projects
+- knowledge
+- documents
+- goals
 
-- identity  
-- preferences  
-- projects  
-- knowledge  
-- documents  
-- goals  
+---
 
-Example structure:
+### Vault Passport
 
-```json
-{
-  "identity": {
-    "name": "Byron",
-    "role": "Founder"
-  },
-  "preferences": {
-    "tone": "structured",
-    "format": "concise"
-  },
-  "projects": [
-    "Vault AI",
-    "Ownership Layer Manifesto"
-  ]
-}
-
-Context blocks allow AI systems to understand users quickly.
-
-Permission Requests
-
-AI systems must request permission before accessing context.
-
-Example request:
-
-ChatGPT is requesting access to:
-
-• Preferences  
-• Projects  
-• Knowledge  
-
-Approve?
-
-Users can approve or deny access.
-
-Vault Passport
-
-When permission is granted, Vault issues a Vault Passport.
-
-A Vault Passport is a signed credential allowing an AI system to access specific context blocks.
-
-Example structure:
-
-{
-  "vault_id": "user_123",
-  "scopes": ["preferences", "projects"],
-  "issued_at": "2026-01-01",
-  "expires_at": "2026-01-02",
-  "signature": "vault_signature_hash"
-}
+A signed, scoped, time-limited credential issued by Vault after the user approves access.
 
 Passports are:
 
-scoped
+- scoped
+- verifiable
+- revocable
+- time-bound
 
-time-limited
+---
 
-revocable
+### Context Blocks
 
-verifiable
+Structured units of personal context that AI systems can request.
 
-Developer Flow
+Examples:
 
-Example interaction between an AI agent and a Vault.
+- preferences
+- projects
+- knowledge
+- goals
 
-Agent → Request context  
-Vault → Ask user for permission  
-User → Approve request  
-Vault → Issue Vault Passport  
-Agent → Receive structured context
+---
 
-Developers interact with Vault through SDKs and APIs.
+## Installation
 
-Example:
+### Python
 
-from vault import connect_vault
+```bash
+pip install vault-ai
+TypeScript
+npm install vault-ai
+Quickstart
+Python
+from vault_ai import connect_vault, verify_passport
 
-vault = connect_vault(user_id="123")
+vault = connect_vault(user_id="user_123")
 
-context = vault.get_context(["preferences", "projects"])
+passport = vault.request_passport(
+    agent_id="research-agent",
+    scopes=["preferences", "projects"],
+    purpose="Provide personalized research support"
+)
+
+is_valid = verify_passport(passport)
+
+if is_valid:
+    context = vault.get_context(passport)
+    print(context)
+TypeScript
+import { connectVault, verifyPassport } from "vault-ai";
+
+const vault = await connectVault({ userId: "user_123" });
+
+const passport = await vault.requestPassport({
+  agentId: "research-agent",
+  scopes: ["preferences", "projects"],
+  purpose: "Provide personalized research support",
+});
+
+const isValid = await verifyPassport(passport);
+
+if (isValid) {
+  const context = await vault.getContext(passport);
+  console.log(context);
+}
+Example Developer Flow
+User connects Vault
+      ↓
+App requests context scopes
+      ↓
+Vault asks user for permission
+      ↓
+Vault issues Passport
+      ↓
+App verifies Passport
+      ↓
+App receives approved context
 Example Use Cases
 
-Vault enables developers to build AI systems that understand users instantly.
-
-Example applications include:
+Vault SDK can be used to build:
 
 AI personal assistants
 
 AI research copilots
 
+AI planning tools
+
 AI travel planners
 
 AI personal CRMs
 
-AI planning agents
-
-AI knowledge assistants
+AI knowledge systems
 
 All powered by user-owned context.
 
-Relationship to AI Systems
+Proposed API
 
-Vault does not replace AI models.
+The initial SDK surface is designed to stay simple.
 
-Instead, Vault provides the context layer that allows AI systems to operate effectively.
+Python
+connect_vault(user_id: str)
+request_passport(agent_id: str, scopes: list[str], purpose: str)
+verify_passport(passport: dict)
+get_context(passport: dict)
+revoke_access(passport_id: str)
+TypeScript
+connectVault({ userId: string })
+requestPassport({ agentId: string, scopes: string[], purpose: string })
+verifyPassport(passport: object)
+getContext(passport: object)
+revokeAccess(passportId: string)
+Relationship to Vault Context Protocol
 
-AI models provide intelligence.
+Vault SDK is the developer interface for applications using the Vault Context Protocol.
 
-Vault provides identity and context.
+The protocol defines:
 
-Together they create personal AI.
+how context is structured
 
-Protocol Status
+how permissions are requested
 
-Vault Context Protocol is currently in early development.
+how passports are issued
 
-This repository defines the initial specification and core primitives.
+how access is verified
 
-Future work includes:
+The SDK makes it easy to use those primitives in real products.
 
-protocol extensions
+Status
 
-SDK implementations
+Vault SDK is currently in early development.
 
-developer tooling
+Planned work includes:
 
-ecosystem integrations
+Python package
+
+TypeScript package
+
+example integrations
+
+local development tooling
+
+hosted Vault API support
 
 Contributing
 
-We welcome discussion and contributions from developers, researchers, and AI builders.
+We welcome developers, builders, and researchers who want to help shape the ownership layer for AI.
 
 You can contribute by:
 
-proposing protocol improvements
+improving the SDK design
 
-suggesting use cases
+proposing APIs
 
-building integrations
+building examples
 
-creating SDKs
+creating integrations
 
 Please open an issue or start a discussion.
 
@@ -273,9 +230,3 @@ License
 MIT License
 
 Copyright 2026 Byron Goodman
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction.
-
-See LICENSE file for full details.
